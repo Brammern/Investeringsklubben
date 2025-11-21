@@ -1,10 +1,23 @@
 package User;
 
 public class Member implements User{
-    //many fields
+    int userId;
+    String fullName;
+    String email;
+    String birthDate;
+    int initialCash;
 
-    public Member(){
+    public Member(int userId, String fullName, String email, String birthDate, int initialCash){
+        this.userId=userId;
+        this.fullName=fullName;
+        this.email=email;
+        this.birthDate=birthDate;
+        this.initialCash=initialCash;
         //ask for username and initialize fields
+    }
+
+    public int getInitialCash() {
+        return initialCash;
     }
 
     @Override
