@@ -1,6 +1,5 @@
 package User;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -8,21 +7,34 @@ import java.util.Scanner;
 import Main.*;
 
 public class Admin implements User {
-    private ArrayList<Member> user;
+    private ArrayList<Member> members = new ArrayList<>();
     private Menu menu;
+
+
+    public Admin(ArrayList<Member> members, Menu menu) {
+        this.members = members;
+        this.menu = menu;
+    }
 
     private final Scanner scan = new Scanner(System.in);
 
 
-    public Admin() {
-        passwordValidate();
+    public void admin() {
+        display();
     }
 
 
     @Override
     public void display() {
-        boolean running = true;
 
+        if (!login()) {
+            if (menu != null) {
+                menu.displayMenu();
+            }
+            return;
+        }
+
+        boolean running = true;
         while (running) {
             System.out.println("---ADMIN MENU---");
             System.out.println("1. Portefølge");
@@ -42,7 +54,9 @@ public class Admin implements User {
                     break;
                 case "9":
                     running = false;
-                    menu.displayMenu();
+                    if (menu != null) {
+                        menu.displayMenu();
+                    }
                     break;
 
                 default:
@@ -57,32 +71,41 @@ public class Admin implements User {
 
 
     public void portfolioOverview() {
-        System.out.println("Portfolio" + user);
+        System.out.println("Alle medlemmer:");
+        for (Member m : members) {
+            System.out.println(m.getUserId() + " - " + m.getFullName() + " - " + m.getInitialCash() + " DKK");
+        }
     }
 
     public void showRankings() {
         System.out.println("Top 5 inversteringer:");
-        Collections.sort(user, (i1, i2) -> Integer.compare(i1.getInitialCash(), (i2.getInitialCash())));
-        for (int i = 0; i < Math.min(5, user.size()); i++) {
-            System.out.println(user.get(i));
+        members.sort((m1,m2) -> m2.getInitialCash() - m1.getInitialCash());
+        for (int i = 0; i < Math.min(5, members.size()); i++) {
+            Member m = members.get(i);
+            System.out.println((m.getUserId() + " - " + m.getFullName() + " - " + m.getInitialCash()));
         }
 
     }
 
     public void showStocks() {
-
+//Mangler filehandler
     }
 
-    public void passwordValidate() {
-        String type = scan.nextLine();
-        if (type.equals("1234")) {
-            display();
-        } else if (type.equalsIgnoreCase("Tilbage")) {
-            menu.displayMenu();
-        } else {
-            System.out.println("Prøv igen, eller skriv 'Tilbage' for at gå tilbage");
-            passwordValidate();
-        }
+    public boolean login() {
+        while (true) {
+            System.out.println("---ADMIN LOGIN---");
+            System.out.println("Skriv adgangskoden:");
+            String input = scan.nextLine();
 
+            if (input.equals("1234")) {
+                return true;
+            } else if (input.equalsIgnoreCase("Tilbage")) {
+                System.out.println("Går tilbage til menuen! \n");
+                return false;
+            } else {
+                System.out.println("Prøv igen, eller skriv 'Tilbage' for at gå tilbage");
+            }
+
+        }
     }
 }

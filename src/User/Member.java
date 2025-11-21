@@ -27,8 +27,23 @@ public class Member implements User{
         return initialCash;
     }
 
+    public String getFullName(){
+        return fullName;
+    }
+
+    public int getUserId(){
+        return userId;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+
     @Override
     public void display(){
+        //Mangler medlemmer ID + navn verificering - Grov skitse pt.
+
         boolean running = true;
 
         while (running) {
@@ -53,13 +68,18 @@ public class Member implements User{
                     break;
                 case "4":
                     registerPurchase();
+                    break;
                 case "5":
                     showPortfolio();
+                    break;
                 case "6":
                     showTransactionHistory();
+                    break;
                 case "9":
                     running = false;
-                    menu.displayMenu();
+                    if (menu==null) {
+                        menu.displayMenu();
+                    }
                     break;
 
                 default:
@@ -72,15 +92,18 @@ public class Member implements User{
     }
 
     public void showStockMarket(){
-
+//Mangler filehandler
     }
     public void showCurrency(){
+//Mangler filehandler
 
     }
     public void registerSale(){
+//Mangler filehandler
 
     }
     public void registerPurchase(){
+//Mangler filehandler
 
     }
     public void showPortfolio(){
