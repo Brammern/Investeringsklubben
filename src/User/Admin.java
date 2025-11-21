@@ -1,24 +1,57 @@
 package User;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
+
 import Main.*;
 
 public class Admin implements User {
     private ArrayList<Member> user;
     private Menu menu;
 
-private Scanner scan = new Scanner(System.in);
+    private final Scanner scan = new Scanner(System.in);
 
 
     public Admin() {
         passwordValidate();
     }
 
+
     @Override
     public void display() {
-        //shows all Admin methods
+        boolean running = true;
+
+        while (running) {
+            System.out.println("---ADMIN MENU---");
+            System.out.println("1. Portefølge");
+            System.out.println("2. Rangliste (top 5)");
+            System.out.println("3. Aktier");
+            System.out.println("9. Tilbage til menu");
+            String choice = scan.nextLine();
+            switch (choice) {
+                case "1":
+                    portfolioOverview();
+                    break;
+                case "2":
+                    showRankings();
+                    break;
+                case "3":
+                    showStocks();
+                    break;
+                case "9":
+                    running = false;
+                    menu.displayMenu();
+                    break;
+
+                default:
+                    System.out.println("Ugyldigt valg, prøv igen!");
+                    break;
+
+
+            }
+        }
 
     }
 
@@ -40,13 +73,13 @@ private Scanner scan = new Scanner(System.in);
 
     }
 
-    public void passwordValidate(){
+    public void passwordValidate() {
         String type = scan.nextLine();
-        if(type.equals("1234")) {
+        if (type.equals("1234")) {
             display();
-        }else if(type.equalsIgnoreCase("Tilbage")){
+        } else if (type.equalsIgnoreCase("Tilbage")) {
             menu.displayMenu();
-        }else{
+        } else {
             System.out.println("Prøv igen, eller skriv 'Tilbage' for at gå tilbage");
             passwordValidate();
         }
