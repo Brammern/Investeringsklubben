@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+import CustomExceptions.InvalidPasswordException;
 import Main.*;
 
 public class Admin implements User {
@@ -97,14 +98,27 @@ public class Admin implements User {
             System.out.println("Skriv adgangskoden:");
             String input = scan.nextLine();
 
-            if (input.equals("1234")) {
-                return true;
-            } else if (input.equalsIgnoreCase("Tilbage")) {
-                System.out.println("Går tilbage til menuen! \n");
+            if (input.equalsIgnoreCase("Tilbage")){
+                System.out.println("Returnere til hovedmenuen... \n");
                 return false;
-            } else {
-                System.out.println("Prøv igen, eller skriv 'Tilbage' for at gå tilbage");
             }
+
+            try {
+                passwordValidator.validate(input);
+                System.out.println("Login lykkedes! \n");
+                return true;
+            } catch (InvalidPasswordException e) {
+                System.out.println(e.getMessage());
+            }
+
+//            if (input.equals("1234")) {
+//                return true;
+//            } else if (input.equalsIgnoreCase("Tilbage")) {
+//                System.out.println("Går tilbage til menuen! \n");
+//                return false;
+//            } else {
+//                System.out.println("Prøv igen, eller skriv 'Tilbage' for at gå tilbage");
+//            }
 
         }
     }
