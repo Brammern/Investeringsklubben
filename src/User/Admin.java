@@ -73,7 +73,7 @@ public class Admin implements User {
         Burde umiddelbart være færdig - Sammenligner initialcash så man kan se hvem der har flest penge
         Muligvis skal den også læse fra aktier.
          */
-        System.out.println("Top 5 inversteringer:");
+        System.out.println("Top 5 medlemmer:");
         members.sort((m1, m2) -> m2.getInitialCash() - m1.getInitialCash());
         for (int i = 0; i < Math.min(5, members.size()); i++) {
             Member m = members.get(i);
