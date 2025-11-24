@@ -2,9 +2,7 @@ package Utilities;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Scanner;
 
@@ -51,7 +49,7 @@ public class ValidatePassword {
         return diff == 0;
     }
 
-    private byte[] fromHex(String hex) throws NoSuchAlgorithmException
+    private byte[] fromHex(String hex)
     {
         byte[] bytes = new byte[hex.length() / 2];
         for(int i = 0; i < bytes.length ;i++)
