@@ -41,7 +41,7 @@ public class ValidatePassword {
         SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         byte[] testHash = skf.generateSecret(spec).getEncoded();
 
-        int diff = hash.length ^ testHash.length;
+        int diff = hash.length ^     testHash.length;
         for(int i = 0; i < hash.length && i < testHash.length; i++)
         {
             diff |= hash[i] ^ testHash[i];
