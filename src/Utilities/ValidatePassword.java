@@ -8,6 +8,9 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Scanner;
 
+/**
+ * <a href ="https://howtodoinjava.com/java/java-security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/">Hashing guide</a>
+ */
 public class ValidatePassword {
     private final String correctHashedPassword = "1000:2ed1bb61fc9a0a3c6882498539603613:d6cce0b043d20a62670ab9d9dc333b1e1521705c57c864686eea1f4ce0c4a2e1d72acb579103e33dcacfade6b51fe3401caf53d72c0936b76bc22a19435829c6";
 
