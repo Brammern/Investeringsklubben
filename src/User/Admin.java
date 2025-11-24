@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-import CustomExceptions.InvalidPasswordException;
+import CustomExceptions.*;
 import Main.*;
 
 public class Admin implements User {
@@ -104,7 +104,7 @@ public class Admin implements User {
             }
 
             try {
-                passwordValidator.validate(input);
+                //passwordValidator.validate(input);
                 System.out.println("Login lykkedes! \n");
                 return true;
             } catch (InvalidPasswordException e) {
