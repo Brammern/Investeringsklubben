@@ -1,16 +1,17 @@
 package User;
 
 public class Holding {
-    private String stocks;
+    private String ticker;
     private int quantity;
 
-    public Holding (String stocks, int quantity) {
-        this.stocks = stocks;
+
+    public Holding (String ticker, int quantity) {
+        this.ticker = ticker;
         this.quantity=quantity;
     }
 
-    public String getStocks(){
-        return stocks;
+    public String getTicker(){
+        return ticker;
     }
 
     public int getQuantity(){
@@ -21,8 +22,9 @@ public class Holding {
         this.quantity=quantity;
     }
 
+
     @Override
     public String toString(){
-        return stocks + " x " + quantity;
+        return ticker + " x " + quantity;
     }
 }

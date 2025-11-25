@@ -1,10 +1,8 @@
 package User;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 import Main.*;
-import User.Holding;
 
 public class Member implements User {
     private final Scanner scan = new Scanner(System.in);
@@ -130,7 +128,7 @@ public class Member implements User {
 
         Holding found = null;
         for (Holding h : portfolio) {
-            if (h.getStocks().equalsIgnoreCase(stocks)) {
+            if (h.getTicker().equalsIgnoreCase(stocks)) {
                 found = h;
                 break;
             }
@@ -160,7 +158,7 @@ public class Member implements User {
 
         System.out.println("--- Registrer køb ---");
         System.out.print("Indtast hvilken aktie du har købt: ");
-        String stocks = scan.nextLine();
+        String ticker = scan.nextLine();
 
 
         System.out.print("Hvor mange aktier har du købt?: ");
@@ -168,11 +166,11 @@ public class Member implements User {
         try {
             quantity = Integer.parseInt(scan.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("Mængden skal være et tal. Køb afbrudt.");
+            System.out.println("Antallet skal være et tal. Registrering afbrudt.");
             return;
         }
 
-        Holding h= new Holding(stocks, quantity);
+        Holding h= new Holding(ticker, quantity);
         addHolding(h);
         System.out.println("Tilføjet til din portefølje: " + h);
 
