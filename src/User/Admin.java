@@ -1,23 +1,87 @@
 package User;
 
-public class Admin implements User{
+import java.util.ArrayList;
+import java.util.Scanner;
 
-    public Admin(){
-        //validate password
+import Main.*;
+
+public class Admin implements User {
+    private ArrayList<Member> members = new ArrayList<>();
+    private Menu menu;
+
+
+    public Admin(ArrayList<Member> members, Menu menu) {
+        this.members = members;
+        this.menu = menu;
     }
+
+    private final Scanner scan = new Scanner(System.in);
+
+
     @Override
-    public void display(){
-        //shows all Admin methods
+    public void display() {
+
+        boolean running = true;
+        while (running) {
+            System.out.println("---ADMIN MENU---");
+            System.out.println("1. Portefølge");
+            System.out.println("2. Rangliste (top 5)");
+            System.out.println("3. Aktier");
+            System.out.println("9. Tilbage til menu");
+            String choice = scan.nextLine();
+            switch (choice) {
+                case "1":
+                    portfolioOverview();
+                    break;
+                case "2":
+                    showRankings();
+                    break;
+                case "3":
+                    showStocks();
+                    break;
+                case "9":
+                    running = false;
+                    if (menu != null) {
+                        menu.displayMenu();
+                    }
+                    break;
+
+                default:
+                    System.out.println("Ugyldigt valg, prøv igen!");
+                    break;
+
+
+            }
+        }
 
     }
 
-    public void portfolioOverview(){
 
+    public void portfolioOverview() {
+       /*
+       Mangler portefølge, skal trækkes fra filereader.
+        */
+
+        System.out.println("Alle medlemmer:");
+        for (Member m : members) {
+            System.out.println(m.getUserId() + " - " + m.getFullName() + " - " + m.getInitialCash() + " DKK");
+        }
     }
-    public void showRankings(){
 
+    public void showRankings() {
+        /*
+        Burde umiddelbart være færdig - Sammenligner initialcash så man kan se hvem der har flest penge
+        Muligvis skal den også læse fra aktier.
+         */
+        System.out.println("Top 5 medlemmer:");
+        members.sort((m1, m2) -> m2.getInitialCash() - m1.getInitialCash());
+        for (int i = 0; i < Math.min(5, members.size()); i++) {
+            Member m = members.get(i);
+            System.out.println((m.getUserId() + " - " + m.getFullName() + " - " + m.getInitialCash()));
+        }
     }
-    public void showStocks(){
 
+    public void showStocks() {
+//Mangler filehandler
     }
 }
