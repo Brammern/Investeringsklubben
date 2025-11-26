@@ -32,6 +32,7 @@ public class Admin implements User {
             System.out.println("1. Portefølge");
             System.out.println("2. Rangliste (top 5)");
             System.out.println("3. Aktier");
+            System.out.println("4. Tilføj medlem");
             System.out.println("9. Tilbage til menu");
             String choice = scan.nextLine();
             switch (choice) {
@@ -43,6 +44,9 @@ public class Admin implements User {
                     break;
                 case "3":
                     showStocks();
+                    break;
+                case "4":
+                    addUser();
                     break;
                 case "9":
                     running = false;
@@ -88,5 +92,9 @@ public class Admin implements User {
 
     public void showStocks() {
 //Mangler filehandler
+    }
+
+    public void addUser(){
+        members.add(new Member (""));
     }
 }
