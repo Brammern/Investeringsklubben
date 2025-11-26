@@ -14,6 +14,7 @@ public class Menu {
     public Menu() {
         scanner = new Scanner(System.in);
     }
+    public void displayMenu(){user.display();}
 
 
     private void askAdminLogin() {
