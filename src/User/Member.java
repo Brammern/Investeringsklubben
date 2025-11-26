@@ -10,11 +10,11 @@ public class Member implements User {
     private ArrayList<Holding> portfolio = new ArrayList<>();
 
 
-    int userId;
-    String fullName;
-    String email;
-    String birthDate;
-    int initialCash;
+    private int userId;
+    private String fullName;
+    private String email;
+    private String birthDate;
+    private int initialCash;
 
 
     public Member(int userId, String fullName, String email, String birthDate, int initialCash) {
@@ -173,8 +173,8 @@ public class Member implements User {
         Holding h= new Holding(ticker, quantity);
         addHolding(h);
         System.out.println("Tilføjet til din portefølje: " + h);
-
     }
+
     public void showPortfolio(){
             System.out.println("--- Din portefølje ---");
             if (portfolio.isEmpty()) {
