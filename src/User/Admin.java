@@ -13,7 +13,8 @@ public class Admin implements User {
 
 
     public Admin(Menu menu) {
-        if (!ValidatePassword.validatePassword().enterPassword) {
+        ValidatePassword validatePassword = new ValidatePassword();
+        if (!validatePassword.enterPassword()) {
             throw new InvalidPasswordException("");
         }
         this.menu = menu;
