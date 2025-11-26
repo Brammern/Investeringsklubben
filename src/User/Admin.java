@@ -79,7 +79,6 @@ public class Admin implements User {
             Member m = members.get(i);
             System.out.println((m.getUserId() + " - " + m.getFullName() + " - " + m.getInitialCash()));
         }
-
     }
 
     public void showStocks() {
