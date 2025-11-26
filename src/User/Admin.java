@@ -3,15 +3,20 @@ package User;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import CustomExceptions.InvalidPasswordException;
 import Main.*;
+import Utilities.ValidatePassword;
 
 public class Admin implements User {
     private ArrayList<Member> members = new ArrayList<>();
     private Menu menu;
 
 
-    public Admin(ArrayList<Member> members, Menu menu) {
-        this.members = members;
+    public Admin(Menu menu) {
+        ValidatePassword validatePassword = new ValidatePassword();
+        if (!validatePassword.enterPassword()) {
+            throw new InvalidPasswordException("");
+        }
         this.menu = menu;
     }
 
@@ -79,7 +84,6 @@ public class Admin implements User {
             Member m = members.get(i);
             System.out.println((m.getUserId() + " - " + m.getFullName() + " - " + m.getInitialCash()));
         }
-
     }
 
     public void showStocks() {
