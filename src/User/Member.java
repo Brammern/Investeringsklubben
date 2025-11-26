@@ -2,6 +2,8 @@ package User;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import FileHandler.CSVReader;
 import Main.*;
 
 public class Member implements User {
@@ -24,6 +26,11 @@ public class Member implements User {
         this.birthDate = birthDate;
         this.initialCash = initialCash;
         //ask for username and initialize fields
+    }
+
+    public Member(String fullName) {
+        this.fullName = fullName;
+        createMember(fullName);
     }
 
     public int getInitialCash() {
@@ -143,14 +150,15 @@ public class Member implements User {
         if (quantity >= currentQty) {
             portfolio.remove(found);
             System.out.println("Du har solgt alle dine af:" + stocks + " (" + currentQty + " stk.)");
-        }else {
-            int newQuantity= currentQty - quantity;
+        } else {
+            int newQuantity = currentQty - quantity;
             found.setQuantity(newQuantity);
             System.out.println("Du har nu: " + newQuantity + " aktier af: " + stocks + " tilbage");
         }
 
     }
-    public void registerPurchase(){
+
+    public void registerPurchase() {
         /*MANGLER følgende:
         Skal læse fra fil
         Skal kunne fjerne fra portfølge array under det gældende medlem
@@ -170,24 +178,33 @@ public class Member implements User {
             return;
         }
 
-        Holding h= new Holding(ticker, quantity);
+        Holding h = new Holding(ticker, quantity);
         addHolding(h);
         System.out.println("Tilføjet til din portefølje: " + h);
     }
 
-    public void showPortfolio(){
-            System.out.println("--- Din portefølje ---");
-            if (portfolio.isEmpty()) {
-                System.out.println("Du har ingen investeringer endnu.");
-            } else {
-                for (Holding h : portfolio) {
-                    System.out.println(h);
-                }
+    public void showPortfolio() {
+        System.out.println("--- Din portefølje ---");
+        if (portfolio.isEmpty()) {
+            System.out.println("Du har ingen investeringer endnu.");
+        } else {
+            for (Holding h : portfolio) {
+                System.out.println(h);
             }
         }
+    }
 
 
-    public void showTransactionHistory(){
+    public void showTransactionHistory() {
+
+    }
+
+    public void createMember() {
+        CSVReader userReader = new CSVReader("users");
+        CSVReader transactionReader = new CSVReader("transactions");
+
+        ArrayList<String[]> user = userReader.read();
+        ArrayList<String[]> transaction = transactionReader.read();
 
     }
 }
