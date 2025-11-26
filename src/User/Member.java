@@ -1,11 +1,16 @@
 package User;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Scanner;
 import Main.*;
+import User.Holding;
 
-public class Member implements User{
+public class Member implements User {
     private final Scanner scan = new Scanner(System.in);
     private Menu menu;
+    private ArrayList<Holding> portfolio = new ArrayList<>();
+
 
     int userId;
     String fullName;
@@ -14,12 +19,12 @@ public class Member implements User{
     int initialCash;
 
 
-    public Member(int userId, String fullName, String email, String birthDate, int initialCash){
-        this.userId=userId;
-        this.fullName=fullName;
-        this.email=email;
-        this.birthDate=birthDate;
-        this.initialCash=initialCash;
+    public Member(int userId, String fullName, String email, String birthDate, int initialCash) {
+        this.userId = userId;
+        this.fullName = fullName;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.initialCash = initialCash;
         //ask for username and initialize fields
     }
 
@@ -27,21 +32,21 @@ public class Member implements User{
         return initialCash;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return fullName;
     }
 
-    public int getUserId(){
+    public int getUserId() {
         return userId;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 
 
     @Override
-    public void display(){
+    public void display() {
         //Mangler medlemmer ID + navn verificering - Grov skitse pt.
 
         boolean running = true;
@@ -77,7 +82,7 @@ public class Member implements User{
                     break;
                 case "9":
                     running = false;
-                    if (menu==null) {
+                    if (menu != null) {
                         menu.displayMenu();
                     }
                     break;
@@ -91,24 +96,99 @@ public class Member implements User{
         }
     }
 
-    public void showStockMarket(){
+    public void addHolding(Holding h) {
+        portfolio.add(h);
+    }
+
+    public void showStockMarket() {
 //Mangler filehandler
     }
-    public void showCurrency(){
+
+    public void showCurrency() {
 //Mangler filehandler
 
     }
-    public void registerSale(){
-//Mangler filehandler
+
+    public void registerSale() {
+       /*
+       Skal kunne læse fra aktiefilen
+       scan.nextline skal ændre med filereader
+        */
+
+        System.out.println("--- Registrer salg ---");
+        System.out.print("Indtast hvilken aktie du har solgt: ");
+        String stocks = scan.nextLine();
+
+        System.out.print("Hvor mange aktier har du solgt?: ");
+        int quantity;
+        try {
+            quantity = Integer.parseInt(scan.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Mængden skal være et tal. Køb afbrudt.");
+            return;
+        }
+
+        Holding found = null;
+        for (Holding h : portfolio) {
+            if (h.getStocks().equalsIgnoreCase(stocks)) {
+                found = h;
+                break;
+            }
+        }
+
+        if (found == null) {
+            System.out.println("Du har ingen aktier med navnet: " + stocks + " i din portefølge");
+            return;
+        }
+
+        int currentQty = found.getQuantity();
+        if (quantity >= currentQty) {
+            portfolio.remove(found);
+            System.out.println("Du har solgt alle dine af:" + stocks + " (" + currentQty + " stk.)");
+        }else {
+            int newQuantity= currentQty - quantity;
+            found.setQuantity(newQuantity);
+            System.out.println("Du har nu: " + newQuantity + " aktier af: " + stocks + " tilbage");
+        }
 
     }
     public void registerPurchase(){
-//Mangler filehandler
+        /*MANGLER følgende:
+        Skal læse fra fil
+        Skal kunne fjerne fra portfølge array under det gældende medlem
+         */
+
+        System.out.println("--- Registrer køb ---");
+        System.out.print("Indtast hvilken aktie du har købt: ");
+        String stocks = scan.nextLine();
+
+
+        System.out.print("Hvor mange aktier har du købt?: ");
+        int quantity;
+        try {
+            quantity = Integer.parseInt(scan.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Mængden skal være et tal. Køb afbrudt.");
+            return;
+        }
+
+        Holding h= new Holding(stocks, quantity);
+        addHolding(h);
+        System.out.println("Tilføjet til din portefølje: " + h);
 
     }
     public void showPortfolio(){
+            System.out.println("--- Din portefølje ---");
+            if (portfolio.isEmpty()) {
+                System.out.println("Du har ingen investeringer endnu.");
+            } else {
+                for (Holding h : portfolio) {
+                    System.out.println(h);
+                }
+            }
+        }
 
-    }
+
     public void showTransactionHistory(){
 
     }
