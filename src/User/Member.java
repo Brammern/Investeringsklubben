@@ -1,6 +1,7 @@
 package User;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 import FileHandler.CSVReader;
@@ -145,14 +146,9 @@ public class Member implements User {
     }
 
     public void registerSale() {
-       /*
-       Skal kunne læse fra aktiefilen
-       scan.nextline skal ændre med filereader
-        */
-
         System.out.println("--- Registrer salg ---");
         System.out.print("Indtast hvilken aktie du har solgt: ");
-        String stocks = scan.nextLine();
+        String stocks = scan.nextLine().toUpperCase();
 
         System.out.print("Hvor mange aktier har du solgt?: ");
         int quantity;
@@ -162,7 +158,7 @@ public class Member implements User {
             System.out.println("Mængden skal være et tal. Køb afbrudt.");
             return;
         }
-
+        //Tjekker om brugeren ejer aktien
         Holding found = null;
         for (Holding h : portfolio) {
             if (h.getTicker().equalsIgnoreCase(stocks)) {
@@ -175,15 +171,35 @@ public class Member implements User {
             System.out.println("Du har ingen aktier med navnet: " + stocks + " i din portefølge");
             return;
         }
+        if (quantity > found.getQuantity()) {
+            System.out.println("Du kan ikke sælge flere aktier end du ejer");
+            return;
+        }
+        //Henter prisen fra aktiefilen
+        CSVReader stockReader = new CSVReader("Stockmarket");
+        ArrayList<String[]> rows = stockReader.read();
 
-        int currentQty = found.getQuantity();
-        if (quantity >= currentQty) {
+        Double price = null;
+        String currency = null;
+
+        for (String[] r : rows) {
+            if (r[0].equalsIgnoreCase(stocks)) {
+                price = Double.parseDouble(r[3]);
+                currency = r[4];
+                break;
+            }
+        }
+        if (price == null) {
+            System.out.println("Kunne ikke finde aktien");
+            return;
+        }
+        //Opdatere portoføljen
+        if (quantity == found.getQuantity()) {
             portfolio.remove(found);
-            System.out.println("Du har solgt alle dine af:" + stocks + " (" + currentQty + " stk.)");
+            System.out.println("Alle" + stocks + " aktier er solgt til kurs " + price + " " + currency);
         } else {
-            int newQuantity = currentQty - quantity;
-            found.setQuantity(newQuantity);
-            System.out.println("Du har nu: " + newQuantity + " aktier af: " + stocks + " tilbage");
+            found.setQuantity(found.getQuantity() - quantity);
+            System.out.println(quantity + " stk " + stocks + " solgt til kurs " + price + " " + currency);
         }
 
     }
