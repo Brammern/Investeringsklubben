@@ -87,7 +87,7 @@ public class Member implements User {
                 case "9":
                     running = false;
                     if (menu != null) {
-                        menu.displayMenu();
+                        menu.askAdminLogin();
                     }
                     break;
 
