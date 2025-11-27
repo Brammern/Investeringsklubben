@@ -17,17 +17,19 @@ public class Menu {
     public void displayMenu(){user.display();}
 
 
-    private void askAdminLogin() {
+    public void askAdminLogin() {
         while (true) {
             System.out.print("Vil du logge ind som Admin [Y/N]: ? ");
             String input = scanner.nextLine().trim().toLowerCase();
 
             if (input.equals("y") || input.equals("yes")) {
-                user = new Admin();
+                user = new Admin(this);
                 user.display();
             }
             if (input.equals("n") || input.equals("no")) {
-                user = new Member();
+                System.out.println("Hvad er dit bruger navn?");
+                String name = scanner.nextLine();
+                user = new Member(name);
                 user.display();
             }
             System.out.println("Ugyldigt valg. Skriv enten yes/y eller no/n.");
