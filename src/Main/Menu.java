@@ -36,9 +36,7 @@ public class Menu {
             System.out.println("Ugyldigt valg. Skriv enten yes/y eller no/n.");
         }
     }
-
-
-}
+ }
 
 
 

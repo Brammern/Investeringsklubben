@@ -105,7 +105,23 @@ public class Member implements User {
     }
 
     public void showStockMarket() {
-//Mangler filehandler
+        System.out.println("\n--- Aktiemarked ---");
+
+        CSVReader stockReader = new CSVReader("Stockmarket");
+        ArrayList<String[]> rows = stockReader.read();
+
+        if (rows.isEmpty()) {
+            System.out.println("Ingen aktier fundet");
+            return;
+        }
+        System.out.println("Ticker | Navn | Pris");
+
+        for (String[] r : rows) {
+            String ticker = r[0];
+            String name = r[1];
+            String price = r[3];
+            System.out.println(ticker + " | " + name + " | " + price);
+        }
     }
 
     public void showCurrency() {
