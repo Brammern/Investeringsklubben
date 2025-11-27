@@ -18,7 +18,6 @@ public class Member implements User {
     private String birthDate;
     private int initialCash;
 
-
     public Member(int userId, String fullName, String email, String birthDate, int initialCash) {
         this.userId = userId;
         this.fullName = fullName;
@@ -178,9 +177,10 @@ public class Member implements User {
             return;
         }
 
-        Holding h = new Holding(ticker, quantity);
-        addHolding(h);
-        System.out.println("Tilføjet til din portefølje: " + h);
+        //to be fixed
+        //Holding h = new Holding(ticker, quantity);
+        //addHolding(h);
+        //System.out.println("Tilføjet til din portefølje: " + h);
     }
 
     public void showPortfolio() {
@@ -199,7 +199,7 @@ public class Member implements User {
 
     }
 
-    public void createMember() {
+    public void createMember(String fullName) {
         CSVReader userReader = new CSVReader("users");
         CSVReader transactionReader = new CSVReader("transactions");
 

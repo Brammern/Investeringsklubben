@@ -14,8 +14,9 @@ public class Admin implements User {
 
     public Admin(Menu menu) {
         ValidatePassword validatePassword = new ValidatePassword();
+        System.out.println("Indtast password");
         if (!validatePassword.enterPassword()) {
-            throw new InvalidPasswordException("");
+            throw new InvalidPasswordException("Invalid Password");
         }
         this.menu = menu;
     }
