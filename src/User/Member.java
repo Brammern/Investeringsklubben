@@ -5,7 +5,10 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import FileHandler.CSVReader;
+import FileHandler.TransactionWriter;
 import Main.*;
+
+import static FileHandler.TransactionHelper.getNextTransactionId;
 
 public class Member implements User {
     private final Scanner scan = new Scanner(System.in);
@@ -155,7 +158,7 @@ public class Member implements User {
         try {
             quantity = Integer.parseInt(scan.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("Mængden skal være et tal. Køb afbrudt.");
+            System.out.println("Mængden skal være et tal. Salg afbrudt.");
             return;
         }
         //Tjekker om brugeren ejer aktien
@@ -199,8 +202,12 @@ public class Member implements User {
             System.out.println("Alle" + stocks + " aktier er solgt til kurs " + price + " " + currency);
         } else {
             found.setQuantity(found.getQuantity() - quantity);
-            System.out.println(quantity + " stk " + stocks + " solgt til kurs " + price + " " + currency);
+            System.out.println(quantity + " stk " + stocks + " akter solgt til kurs " + price + " " + currency);
         }
+        //Skriver transaktionen til CSV
+        int nextId = getNextTransactionId(); //Metode til at finde næste ledige ID
+        TransactionWriter tw = new TransactionWriter("Transactions");
+        tw.writeTransaction(nextId, this.userId, java.time.LocalDateTime.now().toString(), stocks, price, currency, "Sell", quantity);
 
     }
 
