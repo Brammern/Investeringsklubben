@@ -125,8 +125,23 @@ public class Member implements User {
     }
 
     public void showCurrency() {
-//Mangler filehandler
+        System.out.println("\n--- Valutakurser ---");
 
+        CSVReader currencyReader = new CSVReader("Currency");
+        ArrayList<String[]> rows = currencyReader.read();
+
+        if (rows.isEmpty()) {
+            System.out.println("Ingen data fundet");
+            return;
+        }
+        System.out.println("Base | Quote | Rate");
+
+        for (String[] r : rows) {
+            String base = r[0];
+            String quote = r[1];
+            String rate = r[2];
+            System.out.println(base + " | " + quote + " | " + rate);
+        }
     }
 
     public void registerSale() {
