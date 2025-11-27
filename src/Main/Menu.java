@@ -19,6 +19,7 @@ public class Menu {
 
 
     public void askAdminLogin() {
+        user = null;
         while (true) {
             System.out.print("Vil du logge ind som Admin [Y/N]: ? ");
             String input = scanner.nextLine().trim().toLowerCase();

@@ -52,7 +52,7 @@ public class Admin implements User {
                 case "9":
                     running = false;
                     if (menu != null) {
-                        menu.displayMenu();
+                        menu.askAdminLogin();
                     }
                     break;
 
@@ -63,6 +63,7 @@ public class Admin implements User {
 
             }
         }
+
 
     }
 
