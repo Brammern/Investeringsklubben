@@ -3,6 +3,7 @@ package Utilities;
 import FileHandler.CSVReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ValidateUserID {
@@ -18,24 +19,23 @@ public class ValidateUserID {
         }
     }
 
-    public boolean isValid(String username) {
+    private boolean isValid(String username) {
         return validUsers.contains(username);
     }
-    public void login() {
+    public String login() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.print("Enter username: ");
-            String username = scanner.nextLine().trim();
+            System.out.print("Indtast dit fulde navn: ");
+            String username = scanner.nextLine();
 
             if (isValid(username)) {
-                System.out.println("Welcome, " + username);
-                break;
+                System.out.println("Velkommen, " + username);
+                return username;
             } else {
-                System.out.println("Invalid username, try again.\n");
+                System.out.println("Forkert brugernavn, prøv igen.\n");
             }
         }
 
-        scanner.close();
     }
 }

@@ -1,6 +1,7 @@
 package Main;
 
 import User.*;
+import Utilities.ValidateUserID;
 
 import java.util.Scanner;
 
@@ -27,8 +28,8 @@ public class Menu {
                 user.display();
             }
             if (input.equals("n") || input.equals("no")) {
-                System.out.println("Hvad er dit bruger navn?");
-                String name = scanner.nextLine();
+                ValidateUserID validateUserID = new ValidateUserID();
+                String name = validateUserID.login();
                 user = new Member(name);
                 user.display();
             }
