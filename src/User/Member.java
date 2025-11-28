@@ -207,4 +207,9 @@ public class Member implements User {
         ArrayList<String[]> transaction = transactionReader.read();
 
     }
+
+    @Override
+    public String toString(){
+        return userId + " - " + fullName + " - " + email + " - " + birthDate + " - " + initialCash + " DDK.";
+    }
 }

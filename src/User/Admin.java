@@ -176,8 +176,8 @@ public class Admin implements User {
         }
 
         public void showMembers () {
-            for (Member m : members) {
-                System.out.println("---Alle Medlemmer---");
+            System.out.println("---Alle Medlemmer---");
+        for (Member m : members) {
                 System.out.println(m);
             }
         }
