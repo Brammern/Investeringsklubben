@@ -36,6 +36,7 @@ public class Admin implements User {
             System.out.println("2. Rangliste (top 5)");
             System.out.println("3. Aktier");
             System.out.println("4. Tilføj medlem");
+            System.out.println("5. Vis alle medlemmer");
             System.out.println("9. Tilbage til menu");
             String choice = scan.nextLine();
             switch (choice) {
