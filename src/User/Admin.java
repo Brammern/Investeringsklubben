@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import CustomExceptions.InvalidPasswordException;
+import FileHandler.CSVReader;
 import Main.*;
 import Utilities.ValidatePassword;
 
@@ -98,5 +99,14 @@ public class Admin implements User {
 
     public void addUser(){
         members.add(new Member (""));
+    }
+
+    private void memberFactory(){
+        CSVReader userReader = new CSVReader("users");
+        CSVReader transactionReader = new CSVReader("transactions");
+
+        ArrayList<String[]> userStrings = userReader.read();
+        ArrayList<String[]> transactionStrings = transactionReader.read();
+
     }
 }
