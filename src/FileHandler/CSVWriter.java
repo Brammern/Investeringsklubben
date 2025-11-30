@@ -1,5 +1,5 @@
 package FileHandler;
 
 public interface CSVWriter {
-    public void write();
+    public void writer();
 }
