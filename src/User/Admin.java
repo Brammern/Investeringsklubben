@@ -20,6 +20,7 @@ public class Admin implements User {
             throw new InvalidPasswordException("Invalid Password");
         }
         this.menu = menu;
+        memberFactory();
     }
 
     private final Scanner scan = new Scanner(System.in);
@@ -103,10 +104,13 @@ public class Admin implements User {
 
     private void memberFactory(){
         CSVReader userReader = new CSVReader("users");
-        CSVReader transactionReader = new CSVReader("transactions");
-
         ArrayList<String[]> userStrings = userReader.read();
-        ArrayList<String[]> transactionStrings = transactionReader.read();
-
+        ArrayList<String> names = new ArrayList<>();
+        for (String[] user: userStrings){
+            names.add(user[1]);
+        }
+        for(String name: names){
+            members.add(new Member(name));
+        }
     }
 }
