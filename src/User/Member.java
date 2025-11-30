@@ -47,6 +47,7 @@ public class Member implements User {
     public String getEmail() {
         return email;
     }
+    public String getBirthDate(){return birthDate;}
 
 
     @Override
