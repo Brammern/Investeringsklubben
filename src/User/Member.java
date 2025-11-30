@@ -18,6 +18,7 @@ public class Member implements User {
     private String email;
     private String birthDate;
     private int initialCash;
+    private double totalValue;
 
     public Member(int userId, String fullName, String email, String birthDate, int initialCash) {
         this.userId = userId;
@@ -31,6 +32,7 @@ public class Member implements User {
     public Member(String fullName) {
         this.fullName = fullName;
         createMember(fullName);
+        this.totalValue = calculateTotalValue();
     }
 
     public int getInitialCash() {
@@ -236,5 +238,12 @@ public class Member implements User {
                 this.addHolding(new Holding(transaction));
             }
         }
+    }
+    private double calculateTotalValue(){
+        double totalValue = 0;
+        for(Holding holding: this.portfolio){
+            totalValue += holding.getCurrentValue();
+        }
+        return totalValue;
     }
 }
