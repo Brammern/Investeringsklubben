@@ -196,7 +196,50 @@ public class Member implements User {
 
 
     public void showTransactionHistory() {
+        CSVReader transactionReader = new CSVReader("transactions");
+        ArrayList<String[]> transaction = transactionReader.read();
 
+        if (userId == 0 && fullName != null && !fullName.isEmpty()) {
+            // Finder userID baseret på fulde navn hvis ID ikke er sat
+            CSVReader userReader = new CSVReader("users");
+            ArrayList<String[]> users = userReader.read();
+            for (String[] user : users) {
+                if (user[1].equalsIgnoreCase(fullName)) {
+                    userId = Integer.parseInt(user[0]);
+                    break;
+                }
+            }
+        }
+
+        System.out.println("--- Din købshistorik ---");
+
+        if (userId == 0) {
+            System.out.println("Bruger ikke fundet. Kan ikke vise transaktionshistorik.");
+            return;
+        }
+
+        boolean found = false;
+        String myIdStr = String.valueOf(userId);
+        for (String[] record : transaction) {
+            if (record == null || record.length == 0) continue;
+            if (record[0].equalsIgnoreCase("id") || record[1].equalsIgnoreCase("user_id")) {
+                continue;
+            }
+            if (record[1].equals(myIdStr)) {
+                found = true;
+                System.out.println("Transaktion ID: " + record[0] +
+                        ", Dato: " + record[2] +
+                        ", Aktie: " + record[3] +
+                        ", Pris: " + record[4] +
+                        ", Valuta: " + record[5] +
+                        ", Type: " + record[6] +
+                        ", Antal: " + record[7]);
+            }
+        }
+        System.out.println("---------------------------\n");
+        if (!found) {
+            System.out.println("Ingen transaktioner fundet for bruger ID: " + userId);
+        }
     }
 
     public void createMember(String fullName) {
