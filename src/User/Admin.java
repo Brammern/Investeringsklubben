@@ -185,6 +185,7 @@ public class Admin implements User {
         private boolean userIdExists ( int userId){
             for (Member m : members) {
                 if (m.getUserId() == userId) {
+                    System.out.println("UserID er allerede i brug!");
                     return true;
                 }
             }
