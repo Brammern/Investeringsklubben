@@ -102,11 +102,12 @@
 
             ArrayList<String[]> stocks = stockReader.read();
 
-            System.out.println("Alle aktier:");
-            for (String[] rows : stocks) {
-                System.out.println(String.join(",", rows));
-            }
+        System.out.println("Alle aktier:");
+        System.out.println("Ticker, Navn, Sektor, Pris, Valuta, Rating, Udbytte, Marked, Seneste Opdatering");
+        for (String[] rows : stocks) {
+            System.out.println(String.join(", ", rows));
         }
+    }
 
         private void memberFactory() {
             CSVReader userReader = new CSVReader("users");
