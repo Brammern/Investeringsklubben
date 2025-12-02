@@ -410,8 +410,8 @@ public class Member implements User, Comparable<Member> {
     }
 
     @Override
-    public String toString(){
-        return userId + " - " + fullName + " - " + email + " - " + birthDate + " - " + initialCash + " DDK.";
+    public String toString() {
+        return userId + " - " + fullName + " - " + email + " - " + birthDate + " - " + initialCash + " DKK";
     }
     @Override
     public int compareTo(Member m){
