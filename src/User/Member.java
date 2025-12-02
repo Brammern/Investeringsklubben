@@ -280,18 +280,9 @@ public class Member implements User, Comparable<Member> {
         }
 
         String today = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        if (existing == null) {
-            Holding h = new Holding(userId, today, ticker, price, currency, "BUY", quantity);
-            addHolding(h);
-        } else {
-            int oldQty = existing.getQuantity();
-            double oldPrice = existing.getPrice();
-            int newQty = oldQty + quantity;
-            double newPrice = ((oldPrice * oldQty) + (price * quantity)) / newQty;
-            portfolio.remove(existing);
-            Holding h = new Holding(userId, today, ticker, newPrice, currency, "BUY", newQty);
-            addHolding(h);
-        }
+        Holding h = new Holding(userId, today, ticker, price, currency, "BUY", quantity);
+        addHolding(h);
+        this.totalValue = calculateTotalValue();
 
         System.out.println("Registreret køb: " + ticker + " (" + stockName + ") x" + quantity + " til kurs: " + price +
                 " " + currency + "\n");
