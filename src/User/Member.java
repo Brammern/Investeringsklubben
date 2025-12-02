@@ -217,10 +217,6 @@ public class Member implements User, Comparable<Member> {
     }
 
     public void registerPurchase() {
-        /*MANGLER følgende:
-        Skal læse fra fil
-        Skal kunne fjerne fra portfølge array under det gældende medlem
-         */
         System.out.println("--- Registrer køb ---");
         System.out.print("Indtast hvilken aktie du har købt: ");
         String ticker = scan.nextLine().toUpperCase();
@@ -269,17 +265,8 @@ public class Member implements User, Comparable<Member> {
             System.out.println("Ugyldig prisformat for aktien " + ticker + ". Registrering afbrudt.");
             return;
         }
-
         // Ensure userId is set
         userIdFromName();
-
-        Holding existing = null;
-        for (Holding h : portfolio) {
-            if (h.getTicker().equalsIgnoreCase(ticker)) {
-                existing = h;
-                break;
-            }
-        }
 
         String today = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         Holding h = new Holding(userId, today, ticker, price, currency, "BUY", quantity);
@@ -353,7 +340,9 @@ public class Member implements User, Comparable<Member> {
             }
         }
         System.out.println("---------------------------\n");
-        if (!found) {throw new InvalidUserIDException("Ingen transaktioner fundet for bruger ID: " + userId);}
+        if (!found) {
+            throw new InvalidUserIDException("Ingen transaktioner fundet for bruger ID: " + userId);
+        }
     }
 
     private void createMember(String fullName) {
@@ -392,13 +381,24 @@ public class Member implements User, Comparable<Member> {
             }
         }
     }
-    private double calculateTotalValue(){
+
+    private double calculateTotalValue() {
+        CSVReader currecyReader = new CSVReader("Currency");
+        ArrayList<String[]> currencyRates = currecyReader.read();
+
         double totalValue = 0;
-        for(Holding holding: this.portfolio){
-            totalValue += holding.getCurrentValue();
+        for (Holding holding : this.portfolio) {
+            for (String[] rate : currencyRates) {
+                if (holding.getCurrency().equalsIgnoreCase(rate[0]) && rate[1].equalsIgnoreCase("DKK")) {
+                    double conversionRate = Double.parseDouble(rate[2]);
+                    double currentValueInDKK = holding.getCurrentValue() * conversionRate;
+                    totalValue += currentValueInDKK;
+                }
+            }
         }
         return totalValue;
     }
+
     public double calculateGrowth(){
         return (this.totalValue/this.initialCash)*100;
     }
@@ -407,6 +407,7 @@ public class Member implements User, Comparable<Member> {
     public String toString() {
         return userId + " - " + fullName + " - " + email + " - " + birthDate + " - " + initialCash + " DKK";
     }
+
     @Override
     public int compareTo(Member m){
         return (int)((this.calculateGrowth() - m.calculateGrowth())*1000);
