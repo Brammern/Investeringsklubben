@@ -85,7 +85,7 @@ public class Holding {
             }
         }
         for(String[] currency: currencies){
-            if (this.currency.equals(currency[2])){
+            if (this.currency.equals(currency[0])){
                 rate = Double.parseDouble(currency[2]);
             }
         }

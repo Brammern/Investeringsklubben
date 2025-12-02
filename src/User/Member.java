@@ -55,6 +55,7 @@ public class Member implements User, Comparable<Member> {
         return email;
     }
     public String getBirthDate(){return birthDate;}
+    public double getTotalValue(){return this.totalValue;}
 
 
     @Override
