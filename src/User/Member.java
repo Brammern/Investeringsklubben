@@ -321,6 +321,7 @@ public class Member implements User, Comparable<Member> {
                 System.out.println(h);
             }
         }
+        System.out.printf(Locale.US, "\nSamlet værdi af portefølje: %.2f DKK%n\n", this.totalValue);
     }
 
 
