@@ -212,7 +212,7 @@ public class Member implements User, Comparable<Member> {
         //Skriver transaktionen til CSV
         int nextId = getNextTransactionId(); //Metode til at finde næste ledige ID
         TransactionWriter tw = new TransactionWriter("Transactions");
-        tw.writeTransaction(nextId, this.userId, java.time.LocalDateTime.now().toString(), stocks, price, currency, "Sell", quantity);
+        tw.writeTransaction(nextId, this.userId, java.time.LocalDateTime.now().toString(), stocks, price, currency, "sell", quantity);
 
     }
 
