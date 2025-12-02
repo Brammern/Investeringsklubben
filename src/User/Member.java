@@ -293,8 +293,8 @@ public class Member implements User, Comparable<Member> {
             addHolding(h);
         }
 
-        System.out.println("Registreret køb: " + ticker + " (" + stockName + ") x" + quantity + " til " + price +
-                " " + currency + " pr. stk.\n");
+        System.out.println("Registreret køb: " + ticker + " (" + stockName + ") x" + quantity + " til kurs: " + price +
+                " " + currency + "\n");
 
         //Writes the transaction to CSV
         int nextId = getNextTransactionId();
