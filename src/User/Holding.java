@@ -31,10 +31,11 @@ public class Holding {
         this.userId=userId;
         this.date=date;
         this.ticker = ticker;
-        this.price=price;
-        this.currency=currency;
-        this.orderType=ordertype;
-        this.quantity=quantity;
+        this.price = price;
+        this.currency = currency;
+        this.orderType = ordertype;
+        this.quantity = quantity;
+        this.currentValue = calculateCurrentValue();
     }
 
     public int getUserId(){
