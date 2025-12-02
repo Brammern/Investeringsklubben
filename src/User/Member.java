@@ -223,7 +223,7 @@ public class Member implements User, Comparable<Member> {
          */
         System.out.println("--- Registrer køb ---");
         System.out.print("Indtast hvilken aktie du har købt: ");
-        String ticker = scan.nextLine();
+        String ticker = scan.nextLine().toUpperCase();
 
         if (ticker.isEmpty()) {
             System.out.println("Aktienavn kan ikke være tomt. Registrering afbrudt.");
