@@ -245,7 +245,9 @@ public class Member implements User, Comparable<Member> {
             }
         }
 
-        if (priceStr == null) {throw new StockNotFoundException("Aktien " + ticker + " blev ikke fundet på markedet.");}
+        if (priceStr == null) {
+            throw new StockNotFoundException(ticker);
+        }
 
         System.out.print("Hvor mange aktier har du købt?: ");
         int quantity;
