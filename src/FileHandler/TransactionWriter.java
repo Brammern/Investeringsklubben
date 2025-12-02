@@ -16,7 +16,7 @@ public class TransactionWriter {
         String priceStr = String.valueOf(price).replace(".", ",");
 
         String line = id + ";" + userId + ";" + date + ";" + ticker + ";" + price + ";" + currency + ";" + orderType + ";" + quantity;
-
+        line = line.replaceAll("\\.", ",");
         try (FileWriter fw = new FileWriter(filename, true)) {
             fw.write(line + "\n");
         } catch (IOException e) {
