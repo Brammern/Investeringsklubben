@@ -11,7 +11,7 @@ import Main.*;
 
 import static FileHandler.TransactionHelper.getNextTransactionId;
 
-public class Member implements User {
+public class Member implements User, Comparable<Member> {
     private final Scanner scan = new Scanner(System.in);
     private Menu menu;
     private ArrayList<Holding> portfolio = new ArrayList<>();
@@ -406,9 +406,16 @@ public class Member implements User {
         }
         return totalValue;
     }
+    public double calculateGrowth(){
+        return (this.totalValue/this.initialCash)*100;
+    }
 
     @Override
     public String toString(){
         return userId + " - " + fullName + " - " + email + " - " + birthDate + " - " + initialCash + " DDK.";
+    }
+    @Override
+    public int compareTo(Member m){
+        return (int)((this.calculateGrowth() - m.calculateGrowth())*1000);
     }
 }
