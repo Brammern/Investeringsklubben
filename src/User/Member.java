@@ -216,25 +216,102 @@ public class Member implements User {
         Skal læse fra fil
         Skal kunne fjerne fra portfølge array under det gældende medlem
          */
-
         System.out.println("--- Registrer køb ---");
         System.out.print("Indtast hvilken aktie du har købt: ");
         String ticker = scan.nextLine();
 
+        if (ticker.isEmpty()) {
+            System.out.println("Aktienavn kan ikke være tomt. Registrering afbrudt.");
+            return;
+        }
+
+        CSVReader stockReader = new CSVReader("stockMarket");
+        ArrayList<String[]> stocks = stockReader.read();
+        String priceStr = null;
+        String currency = "DKK";
+        for (String[] stock : stocks) {
+            if (stock == null || stock.length < 5) continue;
+            if (stock[0].equalsIgnoreCase(ticker)) {
+                priceStr = stock[3];
+                currency = stock[4];
+                break;
+            }
+        }
+
+        if (priceStr == null) {
+            System.out.println("Aktien " + ticker + " blev ikke fundet på markedet.");
+            return;
+        }
 
         System.out.print("Hvor mange aktier har du købt?: ");
         int quantity;
         try {
             quantity = Integer.parseInt(scan.nextLine());
+            if (quantity <= 0) {
+                System.out.println("Antallet skal være et positivt tal. Registrering afbrudt.");
+                return;
+            }
         } catch (NumberFormatException e) {
             System.out.println("Antallet skal være et tal. Registrering afbrudt.");
             return;
         }
 
+        double price;
+        try {
+            price = Double.parseDouble(priceStr);
+        } catch (NumberFormatException e) {
+            System.out.println("Ugyldig prisformat for aktien " + ticker + ". Registrering afbrudt.");
+            return;
+        }
+
+        // Ensure userId is set
+        userIdFromName();
+
+        Holding existing = null;
+        for (Holding h : portfolio) {
+            if (h.getTicker().equalsIgnoreCase(ticker)) {
+                existing = h;
+                break;
+            }
+        }
+
+        String today = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        if (existing == null) {
+            Holding h = new Holding(userId, today, ticker, price, currency, "BUY", quantity);
+            addHolding(h);
+        } else {
+            int oldQty = existing.getQuantity();
+            double oldPrice = existing.getPrice();
+            int newQty = oldQty + quantity;
+            double newPrice = ((oldPrice * oldQty) + (price * quantity)) / newQty;
+            portfolio.remove(existing);
+            Holding h = new Holding(userId, today, ticker, newPrice, currency, "BUY", newQty);
+            addHolding(h);
+        }
+
+        System.out.println("Registreret køb: " + ticker + " x" + quantity + " til " + price + " " + currency);
+
         //to be fixed
         //Holding h = new Holding(ticker, quantity);
         //addHolding(h);
         //System.out.println("Tilføjet til din portefølje: " + h);
+    }
+
+    public void userIdFromName() {
+        if (userId == 0 && fullName != null && !fullName.isEmpty()) {
+            // Finder userID baseret på fulde navn hvis ID ikke er sat
+            CSVReader userReader = new CSVReader("users");
+            ArrayList<String[]> users = userReader.read();
+            for (String[] user : users) {
+                if (user[1].equalsIgnoreCase(fullName)) {
+                    userId = Integer.parseInt(user[0]);
+                    break;
+                }
+            }
+        } else if (userId == 0) {
+            System.out.println("Bruger ikke fundet. Kan ikke registrere køb.");
+            return;
+        }
     }
 
     public void showPortfolio() {
@@ -250,7 +327,36 @@ public class Member implements User {
 
 
     public void showTransactionHistory() {
+        CSVReader transactionReader = new CSVReader("transactions");
+        ArrayList<String[]> transaction = transactionReader.read();
 
+        // Ensure userId is set
+        userIdFromName();
+
+        System.out.println("--- Din købshistorik ---");
+
+        boolean found = false;
+        String myIdStr = String.valueOf(userId);
+        for (String[] record : transaction) {
+            if (record == null || record.length == 0) continue;
+            if (record[0].equalsIgnoreCase("id") || record[1].equalsIgnoreCase("user_id")) {
+                continue;
+            }
+            if (record[1].equals(myIdStr)) {
+                found = true;
+                System.out.println("Transaktion ID: " + record[0] +
+                        ", Dato: " + record[2] +
+                        ", Aktie: " + record[3] +
+                        ", Pris: " + record[4] +
+                        ", Valuta: " + record[5] +
+                        ", Type: " + record[6] +
+                        ", Antal: " + record[7]);
+            }
+        }
+        System.out.println("---------------------------\n");
+        if (!found) {
+            System.out.println("Ingen transaktioner fundet for bruger ID: " + userId);
+        }
     }
 
     public void createMember(String fullName) {
