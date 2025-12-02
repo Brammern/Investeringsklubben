@@ -1,10 +1,14 @@
 package User;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 import FileHandler.CSVReader;
+import FileHandler.TransactionWriter;
 import Main.*;
+
+import static FileHandler.TransactionHelper.getNextTransactionId;
 
 public class Member implements User {
     private final Scanner scan = new Scanner(System.in);
@@ -105,33 +109,59 @@ public class Member implements User {
     }
 
     public void showStockMarket() {
-//Mangler filehandler
+        System.out.println("\n--- Aktiemarked ---");
+
+        CSVReader stockReader = new CSVReader("Stockmarket");
+        ArrayList<String[]> rows = stockReader.read();
+
+        if (rows.isEmpty()) {
+            System.out.println("Ingen aktier fundet");
+            return;
+        }
+        System.out.println("Ticker | Navn | Pris");
+
+        for (String[] r : rows) {
+            String ticker = r[0];
+            String name = r[1];
+            String price = r[3];
+            System.out.println(ticker + " | " + name + " | " + price);
+        }
     }
 
     public void showCurrency() {
-//Mangler filehandler
+        System.out.println("\n--- Valutakurser ---");
 
+        CSVReader currencyReader = new CSVReader("Currency");
+        ArrayList<String[]> rows = currencyReader.read();
+
+        if (rows.isEmpty()) {
+            System.out.println("Ingen data fundet");
+            return;
+        }
+        System.out.println("Base | Quote | Rate");
+
+        for (String[] r : rows) {
+            String base = r[0];
+            String quote = r[1];
+            String rate = r[2];
+            System.out.println(base + " | " + quote + " | " + rate);
+        }
     }
 
     public void registerSale() {
-       /*
-       Skal kunne læse fra aktiefilen
-       scan.nextline skal ændre med filereader
-        */
-
         System.out.println("--- Registrer salg ---");
         System.out.print("Indtast hvilken aktie du har solgt: ");
-        String stocks = scan.nextLine();
+        String stocks = scan.nextLine().toUpperCase();
 
         System.out.print("Hvor mange aktier har du solgt?: ");
         int quantity;
         try {
             quantity = Integer.parseInt(scan.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("Mængden skal være et tal. Køb afbrudt.");
+            System.out.println("Mængden skal være et tal. Salg afbrudt.");
             return;
         }
-
+        //Tjekker om brugeren ejer aktien
         Holding found = null;
         for (Holding h : portfolio) {
             if (h.getTicker().equalsIgnoreCase(stocks)) {
@@ -144,16 +174,40 @@ public class Member implements User {
             System.out.println("Du har ingen aktier med navnet: " + stocks + " i din portefølge");
             return;
         }
-
-        int currentQty = found.getQuantity();
-        if (quantity >= currentQty) {
-            portfolio.remove(found);
-            System.out.println("Du har solgt alle dine af:" + stocks + " (" + currentQty + " stk.)");
-        } else {
-            int newQuantity = currentQty - quantity;
-            found.setQuantity(newQuantity);
-            System.out.println("Du har nu: " + newQuantity + " aktier af: " + stocks + " tilbage");
+        if (quantity > found.getQuantity()) {
+            System.out.println("Du kan ikke sælge flere aktier end du ejer");
+            return;
         }
+        //Henter prisen fra aktiefilen
+        CSVReader stockReader = new CSVReader("Stockmarket");
+        ArrayList<String[]> rows = stockReader.read();
+
+        Double price = null;
+        String currency = null;
+
+        for (String[] r : rows) {
+            if (r[0].equalsIgnoreCase(stocks)) {
+                price = Double.parseDouble(r[3]);
+                currency = r[4];
+                break;
+            }
+        }
+        if (price == null) {
+            System.out.println("Kunne ikke finde aktien");
+            return;
+        }
+        //Opdatere portoføljen
+        if (quantity == found.getQuantity()) {
+            portfolio.remove(found);
+            System.out.println("Alle" + stocks + " aktier er solgt til kurs " + price + " " + currency);
+        } else {
+            found.setQuantity(found.getQuantity() - quantity);
+            System.out.println(quantity + " stk " + stocks + " akter solgt til kurs " + price + " " + currency);
+        }
+        //Skriver transaktionen til CSV
+        int nextId = getNextTransactionId(); //Metode til at finde næste ledige ID
+        TransactionWriter tw = new TransactionWriter("Transactions");
+        tw.writeTransaction(nextId, this.userId, java.time.LocalDateTime.now().toString(), stocks, price, currency, "Sell", quantity);
 
     }
 
