@@ -27,12 +27,14 @@ public class Menu {
             if (input.equals("y") || input.equals("yes")) {
                 user = new Admin(this);
                 user.display();
+                continue;
             }
             if (input.equals("n") || input.equals("no")) {
                 ValidateUserID validateUserID = new ValidateUserID();
                 String name = validateUserID.login();
                 user = new Member(name);
                 user.display();
+                continue;
             }
             System.out.println("Ugyldigt valg. Skriv enten yes/y eller no/n.");
         }

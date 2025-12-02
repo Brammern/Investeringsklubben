@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
+import CustomExceptions.InvalidUserIDException;
 import FileHandler.CSVReader;
 import FileHandler.TransactionWriter;
 import Main.*;
@@ -21,6 +22,7 @@ public class Member implements User {
     private String email;
     private String birthDate;
     private int initialCash;
+    private double totalValue;
 
     public Member(int userId, String fullName, String email, String birthDate, int initialCash) {
         this.userId = userId;
@@ -34,6 +36,7 @@ public class Member implements User {
     public Member(String fullName) {
         this.fullName = fullName;
         createMember(fullName);
+        this.totalValue = calculateTotalValue();
     }
 
     public int getInitialCash() {
@@ -51,6 +54,7 @@ public class Member implements User {
     public String getEmail() {
         return email;
     }
+    public String getBirthDate(){return birthDate;}
 
 
     @Override
@@ -359,13 +363,48 @@ public class Member implements User {
         }
     }
 
-    public void createMember(String fullName) {
+    private void createMember(String fullName) {
         CSVReader userReader = new CSVReader("users");
         CSVReader transactionReader = new CSVReader("transactions");
 
-        ArrayList<String[]> user = userReader.read();
-        ArrayList<String[]> transaction = transactionReader.read();
+        ArrayList<String[]> users = userReader.read();
+        ArrayList<String[]> transactions = transactionReader.read();
 
+        String[] userString = null;
+
+        for (String[] user: users){
+            if (user[1].equals(fullName)){
+                userString = user;
+            }
+        }
+
+        unwrapMember(userString);
+        findTransactions(transactions);
+
+    }
+
+    private void unwrapMember(String[] memberInfo){
+        if (memberInfo == null){throw new InvalidUserIDException("Bruger findes ikke");
+        }
+        this.userId = Integer.parseInt(memberInfo[0]);
+        this.email = memberInfo[2];
+        this.birthDate = memberInfo[3];
+        this.initialCash = Integer.parseInt(memberInfo[4]);
+    }
+    
+    private void findTransactions(ArrayList<String[]> transactions){
+        for (String[] transaction: transactions){
+            if (Integer.parseInt(transaction[1]) == this.userId){
+                this.addHolding(new Holding(transaction));
+            }
+        }
+    }
+    private double calculateTotalValue(){
+        double totalValue = 0;
+        for(Holding holding: this.portfolio){
+            totalValue += holding.getCurrentValue();
+        }
+        return totalValue;
     }
 
     @Override

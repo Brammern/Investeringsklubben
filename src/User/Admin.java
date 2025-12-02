@@ -20,7 +20,7 @@ public class Admin implements User {
             throw new InvalidPasswordException("Invalid Password");
         }
         this.menu = menu;
-        this.members = loadMemberFromCsv();
+        memberFactory();
     }
 
     private final Scanner scan = new Scanner(System.in);
@@ -127,6 +127,18 @@ public class Admin implements User {
         return loadedMemberss;
     }
 
+    private void memberFactory(){
+        CSVReader userReader = new CSVReader("users");
+        ArrayList<String[]> userStrings = userReader.read();
+        ArrayList<String> names = new ArrayList<>();
+        for (String[] user: userStrings){
+            names.add(user[1]);
+        }
+        for(String name: names){
+            members.add(new Member(name));
+        }
+    }
+}
     public void addUser() {
 
         int userId;
