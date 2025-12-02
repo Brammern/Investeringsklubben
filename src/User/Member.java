@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
-import CustomExceptions.InvalidUserIDException;
+import CustomExceptions.*;
 import FileHandler.CSVReader;
 import FileHandler.TransactionWriter;
 import Main.*;
@@ -232,21 +232,20 @@ public class Member implements User, Comparable<Member> {
 
         CSVReader stockReader = new CSVReader("stockMarket");
         ArrayList<String[]> stocks = stockReader.read();
+        String stockName = null;
         String priceStr = null;
         String currency = "DKK";
         for (String[] stock : stocks) {
             if (stock == null || stock.length < 5) continue;
             if (stock[0].equalsIgnoreCase(ticker)) {
+                stockName = stock[1];
                 priceStr = stock[3];
                 currency = stock[4];
                 break;
             }
         }
 
-        if (priceStr == null) {
-            System.out.println("Aktien " + ticker + " blev ikke fundet på markedet.");
-            return;
-        }
+        if (priceStr == null) {throw new StockNotFoundException("Aktien " + ticker + " blev ikke fundet på markedet.");}
 
         System.out.print("Hvor mange aktier har du købt?: ");
         int quantity;
@@ -294,7 +293,8 @@ public class Member implements User, Comparable<Member> {
             addHolding(h);
         }
 
-        System.out.println("Registreret køb: " + ticker + " x" + quantity + " til " + price + " " + currency);
+        System.out.println("Registreret køb: " + ticker + " (" + stockName + ") x" + quantity + " til " + price +
+                " " + currency + " pr. stk.\n");
 
         //to be fixed
         //Holding h = new Holding(ticker, quantity);
@@ -359,9 +359,7 @@ public class Member implements User, Comparable<Member> {
             }
         }
         System.out.println("---------------------------\n");
-        if (!found) {
-            System.out.println("Ingen transaktioner fundet for bruger ID: " + userId);
-        }
+        if (!found) {throw new InvalidUserIDException("Ingen transaktioner fundet for bruger ID: " + userId);}
     }
 
     private void createMember(String fullName) {
