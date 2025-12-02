@@ -138,7 +138,7 @@ public class Admin implements User {
             members.add(new Member(name));
         }
     }
-}
+
     public void addUser() {
 
         int userId;
