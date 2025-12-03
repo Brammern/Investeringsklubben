@@ -405,7 +405,7 @@ public class Member implements User, Comparable<Member> {
 
     @Override
     public String toString() {
-        return userId + " - " + fullName + " - " + email + " - " + birthDate + " - " + initialCash + " DKK";
+        return userId + " - " + fullName + " - " + email + " - " + birthDate + " - " + totalValue + " DKK";
     }
 
     @Override
