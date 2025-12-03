@@ -28,13 +28,14 @@ public class Holding {
     }
 
     public Holding (int userId, String date, String ticker, double price, String currency, String ordertype, int quantity) {
-        this.userId=userId;
-        this.date=date;
+        this.userId = userId;
+        this.date = date;
         this.ticker = ticker;
-        this.price=price;
-        this.currency=currency;
-        this.orderType=ordertype;
-        this.quantity=quantity;
+        this.price = price;
+        this.currency = currency;
+        this.orderType = ordertype;
+        this.quantity = quantity;
+        this.currentValue = calculateCurrentValue();
     }
 
     public int getUserId(){
@@ -71,30 +72,46 @@ public class Holding {
         this.quantity=quantity;
     }
 
-    private double calculateCurrentValue(){
+    private double calculateCurrentValue() {
         CSVReader stockMarketReader = new CSVReader("stockMarket");
-        CSVReader currenciesReader = new CSVReader("currency");
+//        CSVReader currenciesReader = new CSVReader("currency");
         ArrayList<String[]> stocks = stockMarketReader.read();
-        ArrayList<String[]> currencies = currenciesReader.read();
+//        ArrayList<String[]> currencies = currenciesReader.read();
 
         double stockPrice = 0;
-        double rate = 0;
-        for(String[] stock: stocks){
-            if (this.ticker.equals(stock[0])){
-                stockPrice = Double.parseDouble(stock[3]);
+        if (stocks != null) {
+            for(String[] stock: stocks){
+                if (this.ticker.equals(stock[0])){
+                    stockPrice = Double.parseDouble(stock[3]);
+                }
             }
         }
-        for(String[] currency: currencies){
-            if (this.currency.equals(currency[0])){
-                rate = Double.parseDouble(currency[2]);
-            }
-        }
-        return stockPrice*rate*this.quantity;
+
+//        String curr = getCurrency();
+//        double rate = 0;
+//        if (curr != null) {
+//            String code = curr.toUpperCase();
+//            if (!code.equals("DKK") && currencies != null) {
+//                for (String[] row : currencies) {
+//                    if (row[0].equalsIgnoreCase("base_currency")) continue;
+//                    if (row[0].equalsIgnoreCase(code) || row[1].equalsIgnoreCase("DKK")) {
+//                        try {
+//                            rate = Double.parseDouble(row[2]);
+//                        } catch (NumberFormatException e) {
+//                            rate = 1.0;
+//                        }
+//                        break;
+//                    }
+//                }
+//            } else {
+//                rate = 1.0;
+//            }
+//        }
+        return stockPrice * this.quantity;
     }
 
-
     @Override
-    public String toString(){
-        return ticker + " x " + quantity;
+    public String toString() {
+        return ticker + " x" + quantity + " (Nuværende værdi: " + getCurrentValue() + " " + getCurrency() + ")";
     }
 }

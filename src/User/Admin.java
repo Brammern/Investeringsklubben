@@ -12,9 +12,10 @@
     import Main.*;
     import Utilities.ValidatePassword;
 
-    public class Admin implements User {
-        private ArrayList<Member> members = new ArrayList<>();
-        private Menu menu;
+public class Admin implements User {
+    private final Scanner scan = new Scanner(System.in);
+    private ArrayList<Member> members = new ArrayList<>();
+    private Menu menu;
 
 
         public Admin(Menu menu) {
@@ -27,11 +28,8 @@
             memberFactory();
         }
 
-        private final Scanner scan = new Scanner(System.in);
-
-
-        @Override
-        public void display() {
+    @Override
+    public void display() {
 
             boolean running = true;
             while (running) {
@@ -71,12 +69,9 @@
                         break;
 
 
-                }
             }
-
-
         }
-
+    }
 
         public void portfolioOverview() {
             System.out.println("Alle medlemmer:");
@@ -102,11 +97,12 @@
 
             ArrayList<String[]> stocks = stockReader.read();
 
-            System.out.println("Alle aktier:");
-            for (String[] rows : stocks) {
-                System.out.println(String.join(",", rows));
-            }
+        System.out.println("Alle aktier:");
+        System.out.println("Ticker, Navn, Sektor, Pris, Valuta, Rating, Udbytte, Marked, Seneste Opdatering");
+        for (String[] rows : stocks) {
+            System.out.println(String.join(", ", rows));
         }
+    }
 
         private void memberFactory() {
             CSVReader userReader = new CSVReader("users");
