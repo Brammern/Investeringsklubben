@@ -21,11 +21,21 @@ public class Admin implements User {
 
     public Admin(Menu menu) {
         ValidatePassword validatePassword = new ValidatePassword();
-        System.out.println("Indtast password");
-        if (!validatePassword.enterPassword()) {
-            throw new InvalidPasswordException("Invalid Password");
+        boolean valid = false;
+
+        while (!valid) {
+            System.out.println("Indtast password");
+
+            try {
+                if (!validatePassword.enterPassword()) {
+                    throw new InvalidPasswordException("Invalid Password");
+                }
+                valid = true;
+            } catch (InvalidPasswordException e){
+                System.out.println("Forkert kode, prøv igen! \n");
+            }
         }
-        this.menu = menu;
+        this.menu =menu;
         memberFactory();
     }
 
@@ -86,19 +96,19 @@ public class Admin implements User {
         Collections.sort(members);
         for (int i = 0; i < Math.min(5, members.size()); i++) {
             Member m = members.get(i);
-            System.out.println((m.getUserId() + " - " + m.getFullName() + " - " + m.getInitialCash()));
+            System.out.println(m);
         }
     }
 
     public void showStocks() {
         CSVReader stockReader = new CSVReader("stockMarket");
-
+        String format = "%-10s %-25s %-15s %-10s %-8s %-8s %-10s %-25s %-20s";
         ArrayList<String[]> stocks = stockReader.read();
 
         System.out.println("Alle aktier:");
-        System.out.println("Ticker, Navn, Sektor, Pris, Valuta, Rating, Udbytte, Marked, Seneste Opdatering");
+        System.out.println(String.format(format, "Ticker", "Navn", "Sektor", "Pris", "Valuta", "Rating", "Udbytte", "Marked", "Opdatering"));
         for (String[] rows : stocks) {
-            System.out.println(String.join(", ", rows));
+            System.out.println(String.format(format, rows[0], rows[1], rows[2], rows[3], rows[4], rows[5], rows[6], rows[7], rows[8]));
         }
     }
 
