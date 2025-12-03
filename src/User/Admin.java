@@ -18,7 +18,6 @@ public class Admin implements User {
     private ArrayList<Member> members = new ArrayList<>();
     private Menu menu;
 
-
     public Admin(Menu menu) {
         ValidatePassword validatePassword = new ValidatePassword();
         boolean valid = false;
@@ -78,8 +77,6 @@ public class Admin implements User {
                 default:
                     System.out.println("Ugyldigt valg, prøv igen!");
                     break;
-
-
             }
         }
     }

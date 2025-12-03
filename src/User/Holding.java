@@ -74,9 +74,9 @@ public class Holding {
 
     private double calculateCurrentValue() {
         CSVReader stockMarketReader = new CSVReader("stockMarket");
-//        CSVReader currenciesReader = new CSVReader("currency");
+        CSVReader currenciesReader = new CSVReader("currency");
         ArrayList<String[]> stocks = stockMarketReader.read();
-//        ArrayList<String[]> currencies = currenciesReader.read();
+        ArrayList<String[]> currencies = currenciesReader.read();
 
         double stockPrice = 0;
         if (stocks != null) {
@@ -86,32 +86,34 @@ public class Holding {
                 }
             }
         }
+        double rate = getRate(currencies);
+        return stockPrice*rate*this.quantity;
+    }
 
-//        String curr = getCurrency();
-//        double rate = 0;
-//        if (curr != null) {
-//            String code = curr.toUpperCase();
-//            if (!code.equals("DKK") && currencies != null) {
-//                for (String[] row : currencies) {
-//                    if (row[0].equalsIgnoreCase("base_currency")) continue;
-//                    if (row[0].equalsIgnoreCase(code) || row[1].equalsIgnoreCase("DKK")) {
-//                        try {
-//                            rate = Double.parseDouble(row[2]);
-//                        } catch (NumberFormatException e) {
-//                            rate = 1.0;
-//                        }
-//                        break;
-//                    }
-//                }
-//            } else {
-//                rate = 1.0;
-//            }
-//        }
-        return stockPrice * this.quantity;
+    private double getRate(ArrayList<String[]> currencies) {
+        String curr = getCurrency();
+        double rate = 0;
+        String code = curr.toUpperCase();
+        if ("DKK".equals(code)) return 1.0;
+        if (currencies != null) {
+            for (String[] row : currencies) {
+                if (row[0].equalsIgnoreCase("base_currency")) continue;
+                if (row[0].equalsIgnoreCase(code)) {
+                    try {
+                        rate = Double.parseDouble(row[2]);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Fejl ved parsing af valutakurs for " + code + ": " + e.getMessage());
+                        rate = 1.0;
+                    }
+                }
+            }
+        }
+        return rate;
     }
 
     @Override
     public String toString() {
-        return ticker + " x" + quantity + " (Nuværende værdi: " + getCurrentValue() + " " + getCurrency() + ")";
+        String formattedValue = String.format("%.2f", getCurrentValue());
+        return ticker + " x" + quantity + " (Nuværende værdi: " + formattedValue + " DKK" + ")";
     }
 }

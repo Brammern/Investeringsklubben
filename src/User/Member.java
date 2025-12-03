@@ -30,7 +30,6 @@ public class Member implements User, Comparable<Member> {
         this.email = email;
         this.birthDate = birthDate;
         this.initialCash = initialCash;
-        //ask for username and initialize fields
     }
 
     public Member(String fullName) {
@@ -60,8 +59,6 @@ public class Member implements User, Comparable<Member> {
 
     @Override
     public void display() {
-        //Mangler medlemmer ID + navn verificering - Grov skitse pt.
-
         boolean running = true;
 
         while (running) {
@@ -103,8 +100,6 @@ public class Member implements User, Comparable<Member> {
                 default:
                     System.out.println("Ugyldigt valg, prøv igen!");
                     break;
-
-
             }
         }
     }
@@ -166,7 +161,6 @@ public class Member implements User, Comparable<Member> {
             System.out.println("Mængden skal være et tal. Salg afbrudt.");
             return;
         }
-        //Tjekker om brugeren ejer aktien
         Holding found = null;
         for (Holding h : portfolio) {
             if (h.getTicker().equalsIgnoreCase(stocks)) {
@@ -209,10 +203,11 @@ public class Member implements User, Comparable<Member> {
             found.setQuantity(found.getQuantity() - quantity);
             System.out.println(quantity + " stk " + stocks + " akter solgt til kurs " + price + " " + currency);
         }
+        String today = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         //Skriver transaktionen til CSV
         int nextId = getNextTransactionId(); //Metode til at finde næste ledige ID
         TransactionWriter tw = new TransactionWriter("Transactions");
-        tw.writeTransaction(nextId, this.userId, java.time.LocalDateTime.now().toString(), stocks, price, currency, "sell", quantity);
+        tw.writeTransaction(nextId, this.userId, today, stocks, price, currency, "sell", quantity);
 
     }
 
@@ -268,10 +263,9 @@ public class Member implements User, Comparable<Member> {
         // Ensure userId is set
         userIdFromName();
 
-        String today = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String today = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         Holding h = new Holding(userId, today, ticker, price, currency, "BUY", quantity);
         addHolding(h);
-        this.totalValue = calculateTotalValue();
 
         System.out.println("Registreret køb: " + ticker + " (" + stockName + ") x" + quantity + " til kurs: " + price +
                 " " + currency + "\n");
@@ -359,10 +353,8 @@ public class Member implements User, Comparable<Member> {
                 userString = user;
             }
         }
-
         unwrapMember(userString);
         findTransactions(transactions);
-
     }
 
     private void unwrapMember(String[] memberInfo){
@@ -383,18 +375,9 @@ public class Member implements User, Comparable<Member> {
     }
 
     private double calculateTotalValue() {
-        CSVReader currecyReader = new CSVReader("Currency");
-        ArrayList<String[]> currencyRates = currecyReader.read();
-
         double totalValue = 0;
         for (Holding holding : this.portfolio) {
-            for (String[] rate : currencyRates) {
-                if (holding.getCurrency().equalsIgnoreCase(rate[0]) && rate[1].equalsIgnoreCase("DKK")) {
-                    double conversionRate = Double.parseDouble(rate[2]);
-                    double currentValueInDKK = holding.getCurrentValue() * conversionRate;
-                    totalValue += currentValueInDKK;
-                }
-            }
+            totalValue += holding.getCurrentValue();
         }
         return totalValue;
     }
