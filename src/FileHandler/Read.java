@@ -5,7 +5,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Read is a method used for reading data from a CSV file
+ * Has Methods: <br>
+ * {@link #read(String)}
+ */
 class Read {
+    /**
+     * reads all data at filename using {@link BufferedReader}
+     * @param filename filename to read from
+     * @return data read from file
+     */
     static ArrayList<String> read(String filename){
         ArrayList<String> output = new ArrayList<>();
         try {
