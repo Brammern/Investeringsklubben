@@ -15,16 +15,31 @@ import Main.*;
 import Utilities.ValidatePassword;
 
 /**
- *
+ * Admin is an implementation of the User interface with admin rights
  * Has Attributes: <br>
- *
+ * {@link #scan}
+ * {@link #members}
+ * {@link #menu}
  * Has Methods: <br>
+ * {@link #Admin(Menu)}<br>
+ * {@link #display()}<br>
+ * {@link #portfolioById()}<br>
+ * {@link #showRankings()}<br>
+ * {@link #showStocks()}<br>
+ * {@link #addUser()}<br>
+ * {@link #showMembers()}<br>
+ *
  */
 public class Admin implements User, Comparator<Member> {
     private final Scanner scan = new Scanner(System.in);
     private ArrayList<Member> members = new ArrayList<>();
     private Menu menu;
 
+    /**
+     * is the only constructor, it uses {@link ValidatePassword} for password validation and
+     * {@link #memberFactory()} to to fill {@link #members} with relevant data
+     * @param menu {@link Menu} to allow a return to initial screen
+     */
     public Admin(Menu menu) {
         ValidatePassword validatePassword = new ValidatePassword();
         boolean valid = false;
@@ -45,6 +60,9 @@ public class Admin implements User, Comparator<Member> {
         memberFactory();
     }
 
+    /**
+     * display is the main behavior for navigating options
+     */
     @Override
     public void display() {
 
@@ -88,6 +106,9 @@ public class Admin implements User, Comparator<Member> {
         }
     }
 
+    /**
+     * portfolioById shows the portfolio of a certain userID
+     */
     public void portfolioById() {
         System.out.println("Indtast bruger ID:");
         int userId;
@@ -107,6 +128,9 @@ public class Admin implements User, Comparator<Member> {
         System.out.println("Medlem med ID " + userId + " blev ikke fundet.");
     }
 
+    /**
+     * showRankings shows top 5 members by portfolio growth
+     */
     public void showRankings() {
         System.out.println("Top 5 medlemmer:");
         Collections.sort(members);
@@ -116,6 +140,9 @@ public class Admin implements User, Comparator<Member> {
         }
     }
 
+    /**
+     * showStocks shows stocks from the stockmarket.csv file
+     */
     public void showStocks() {
         CSVReader stockReader = new CSVReader("stockMarket");
         String format = "%-10s %-25s %-15s %-10s %-8s %-8s %-10s %-25s %-20s";
@@ -128,6 +155,9 @@ public class Admin implements User, Comparator<Member> {
         }
     }
 
+    /**
+     * fills the members attribute with all members in users.csv file
+     */
     private void memberFactory() {
         CSVReader userReader = new CSVReader("users");
         ArrayList<String[]> userStrings = userReader.read();
@@ -140,6 +170,9 @@ public class Admin implements User, Comparator<Member> {
         }
     }
 
+    /**
+     * addUser registers a new user and adds it to users.csv file
+     */
     public void addUser() {
 
         int userId;
@@ -203,6 +236,9 @@ public class Admin implements User, Comparator<Member> {
         }
     }
 
+    /**
+     * showMembers shows all registered members
+     */
     public void showMembers() {
         System.out.println("---Alle Medlemmer---");
         for (Member m : members) {
