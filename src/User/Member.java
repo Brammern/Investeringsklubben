@@ -12,10 +12,25 @@ import Main.*;
 import static FileHandler.TransactionHelper.getNextTransactionId;
 
 /**
- *
+ * Member implements the User interface to ensure it has the Display() method
  * Has Attributes: <br>
- *
+ * {@link #scan}
+ * {@link #menu}
+ * {@link #portfolio}
+ * and a list of attributes from the users.csv file <br>
  * Has Methods: <br>
+ * {@link #display()} is the main function used. <br>
+ * {@link #Member(String)} is the most used constructor <br>
+ * {@link #addHolding(Holding)}<br>
+ * {@link #showStockMarket()}<br>
+ * {@link #showCurrency()}<br>
+ * {@link #registerSale()}<br>
+ * {@link #registerPurchase()}<br>
+ * {@link #userIdFromName()}<br>
+ * {@link #showPortfolio()}<br>
+ * {@link #showTransactionHistory()}<br>
+ * {@link #calculateGrowth()}
+ *
  */
 public class Member implements User, Comparable<Member> {
     private final Scanner scan = new Scanner(System.in);
@@ -38,6 +53,10 @@ public class Member implements User, Comparable<Member> {
         this.initialCash = initialCash;
     }
 
+    /**
+     * main constructor used takes a full name and gets all other data from file
+     * @param fullName full name of the member
+     */
     public Member(String fullName) {
         this.fullName = fullName;
         createMember(fullName);
@@ -245,6 +264,9 @@ public class Member implements User, Comparable<Member> {
 
     }
 
+    /**
+     * registerPurchase registers a stock purchase
+     */
     public void registerPurchase() {
         System.out.println("--- Registrer køb ---");
         System.out.print("Indtast hvilken aktie du har købt: ");
@@ -310,6 +332,9 @@ public class Member implements User, Comparable<Member> {
         tw.writeTransaction(nextId, userId, today, ticker, price, currency, "buy", quantity);
     }
 
+    /**
+     * userIdFromName finds the userId associated with a name
+     */
     public void userIdFromName() {
         if (userId == 0 && fullName != null && !fullName.isEmpty()) {
             // Finder userID baseret på fulde navn hvis ID ikke er sat
@@ -327,6 +352,9 @@ public class Member implements User, Comparable<Member> {
         }
     }
 
+    /**
+     * showPortFolio prints the {@link #portfolio}
+     */
     public void showPortfolio() {
         System.out.println("--- Portefølje ---");
         if (portfolio.isEmpty()) {
@@ -340,6 +368,9 @@ public class Member implements User, Comparable<Member> {
     }
 
 
+    /**
+     * showTransactionHistory displays the transaction history for this member
+     */
     public void showTransactionHistory() {
         CSVReader transactionReader = new CSVReader("transactions");
         ArrayList<String[]> transaction = transactionReader.read();
@@ -416,6 +447,10 @@ public class Member implements User, Comparable<Member> {
         return totalValue;
     }
 
+    /**
+     * calculates the growth percentage for this members portfolio
+     * @return double of percantage growth
+     */
     public double calculateGrowth(){
         return (this.totalValue/this.initialCash)*100;
     }
