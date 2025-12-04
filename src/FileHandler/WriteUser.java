@@ -7,6 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
+/**
+ *
+ * Has Attributes: <br>
+ *
+ * Has Methods: <br>
+ */
 public class WriteUser implements CSVWriter{
     private final Member member;
     private final String fileName = "src/Data/users.csv";

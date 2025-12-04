@@ -5,6 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ *
+ * Has Attributes: <br>
+ *
+ * Has Methods: <br>
+ */
 class Read {
     static ArrayList<String> read(String filename){
         ArrayList<String> output = new ArrayList<>();

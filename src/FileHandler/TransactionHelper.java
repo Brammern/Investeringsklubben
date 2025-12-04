@@ -2,6 +2,12 @@ package FileHandler;
 
 import java.util.ArrayList;
 
+/**
+ *
+ * Has Attributes: <br>
+ *
+ * Has Methods: <br>
+ */
 public class TransactionHelper {
 
     public static int getNextTransactionId() {

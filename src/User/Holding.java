@@ -4,6 +4,12 @@ import FileHandler.CSVReader;
 
 import java.util.ArrayList;
 
+/**
+ *
+ * Has Attributes: <br>
+ *
+ * Has Methods: <br>
+ */
 public class Holding {
     private int userId;
     private String date;

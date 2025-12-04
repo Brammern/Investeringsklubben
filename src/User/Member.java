@@ -11,6 +11,12 @@ import Main.*;
 
 import static FileHandler.TransactionHelper.getNextTransactionId;
 
+/**
+ *
+ * Has Attributes: <br>
+ *
+ * Has Methods: <br>
+ */
 public class Member implements User, Comparable<Member> {
     private final Scanner scan = new Scanner(System.in);
     private Menu menu;

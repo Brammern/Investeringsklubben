@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 import CustomExceptions.InvalidPasswordException;
@@ -13,7 +14,13 @@ import FileHandler.WriteUser;
 import Main.*;
 import Utilities.ValidatePassword;
 
-public class Admin implements User {
+/**
+ *
+ * Has Attributes: <br>
+ *
+ * Has Methods: <br>
+ */
+public class Admin implements User, Comparator<Member> {
     private final Scanner scan = new Scanner(System.in);
     private ArrayList<Member> members = new ArrayList<>();
     private Menu menu;
@@ -199,5 +206,10 @@ public class Admin implements User {
             }
         }
         return false;
+    }
+
+    @Override
+    public int compare (Member firstMember, Member otherMember){
+        return (int)(firstMember.getTotalValue() - otherMember.getTotalValue());
     }
 }

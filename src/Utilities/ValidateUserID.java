@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+/**
+ *
+ * Has Attributes: <br>
+ *
+ * Has Methods: <br>
+ */
 public class ValidateUserID {
 
     private List<String> validUsers = new ArrayList<>();
