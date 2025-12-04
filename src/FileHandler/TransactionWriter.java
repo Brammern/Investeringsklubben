@@ -3,6 +3,12 @@ package FileHandler;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ *
+ * Has Attributes: <br>
+ *
+ * Has Methods: <br>
+ */
 public class TransactionWriter {
 
     private final String filename;

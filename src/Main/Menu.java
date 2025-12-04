@@ -6,6 +6,12 @@ import Utilities.ValidateUserID;
 import java.util.Scanner;
 
 
+/**
+ *
+ * Has Attributes: <br>
+ *
+ * Has Methods: <br>
+ */
 public class Menu {
 
     private Scanner scanner;

@@ -4,6 +4,25 @@ import FileHandler.CSVReader;
 
 import java.util.ArrayList;
 
+/**
+ * Holding a class containing the most data that is dealt with in this code. <br>
+ * Has Attributes: <br>
+ * {@link #userId}
+ * {@link #date}
+ * {@link #ticker}
+ * {@link #price}
+ * {@link #currency}
+ * {@link #orderType}
+ * {@link #quantity}
+ * {@link #id}
+ * {@link #currentValue}<br>
+ * Has Methods: <br>
+ * {@link #Holding(String[])} <br>
+ * {@link #calculateCurrentValue()}<br>
+ * {@link #getRate(ArrayList)}<br>
+ * {@link #toString()}<br>
+ *
+ */
 public class Holding {
     private int userId;
     private String date;
@@ -15,6 +34,10 @@ public class Holding {
     private int id;
     private double currentValue;
 
+    /**
+     * constructor used for data read directly from files also uses {@link #calculateCurrentValue()} to set {@link #currentValue}
+     * @param data String[] of data from files
+     */
     public Holding(String[] data){
         this.id = Integer.parseInt(data[0]);
         this.userId = Integer.parseInt(data[1]);
@@ -72,6 +95,10 @@ public class Holding {
         this.quantity=quantity;
     }
 
+    /**
+     * calculateCurrentValue calculate the current value of the holding using data from stockmarket.csv and currency.csv
+     * @return double of current value of the stock
+     */
     private double calculateCurrentValue() {
         CSVReader stockMarketReader = new CSVReader("stockMarket");
         CSVReader currenciesReader = new CSVReader("currency");
@@ -90,6 +117,11 @@ public class Holding {
         return stockPrice*rate*this.quantity;
     }
 
+    /**
+     * gets the currency conversion rate for the appropriate currency
+     * @param currencies list of currencies from currency.csv file
+     * @return double of current currency conversion rate
+     */
     private double getRate(ArrayList<String[]> currencies) {
         String curr = getCurrency();
         double rate = 0;
