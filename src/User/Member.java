@@ -288,13 +288,13 @@ public class Member implements User, Comparable<Member> {
                 }
             }
         } else if (userId == 0) {
-            System.out.println("Bruger ikke fundet. Kan ikke registrere køb.");
+            System.out.println("Bruger ikke fundet. Kan ikke hente bruger ID.");
             return;
         }
     }
 
     public void showPortfolio() {
-        System.out.println("--- Din portefølje ---");
+        System.out.println("--- Portefølje ---");
         if (portfolio.isEmpty()) {
             System.out.println("Du har ingen investeringer endnu.");
         } else {

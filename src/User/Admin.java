@@ -44,7 +44,7 @@ public class Admin implements User {
         boolean running = true;
         while (running) {
             System.out.println("---ADMIN MENU---");
-            System.out.println("1. Portefølge");
+            System.out.println("1. Portefølge for bruger (ID)");
             System.out.println("2. Rangliste (top 5)");
             System.out.println("3. Aktier");
             System.out.println("4. Tilføj medlem");
@@ -53,7 +53,7 @@ public class Admin implements User {
             String choice = scan.nextLine();
             switch (choice) {
                 case "1":
-                    portfolioOverview();
+                    portfolioById();
                     break;
                 case "2":
                     showRankings();
@@ -81,11 +81,23 @@ public class Admin implements User {
         }
     }
 
-    public void portfolioOverview() {
-        System.out.println("Alle medlemmer:");
-        for (Member m : members) {
-            System.out.println(m);
+    public void portfolioById() {
+        System.out.println("Indtast bruger ID:");
+        int userId;
+        try {
+            userId = Integer.parseInt(scan.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Fejl, det skal være et tal!");
+            return;
         }
+        for (Member m : members) {
+            if (m.getUserId() == userId) {
+                System.out.println("Portefølge for " + m.getFullName() + ":");
+                m.showPortfolio();
+                return;
+            }
+        }
+        System.out.println("Medlem med ID " + userId + " blev ikke fundet.");
     }
 
     public void showRankings() {
