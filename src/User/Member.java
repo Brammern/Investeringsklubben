@@ -294,7 +294,7 @@ public class Member implements User, Comparable<Member> {
     }
 
     public void showPortfolio() {
-        System.out.println("--- Din portefølje ---");
+        System.out.println("--- Portefølje ---");
         if (portfolio.isEmpty()) {
             System.out.println("Du har ingen investeringer endnu.");
         } else {
