@@ -5,23 +5,40 @@ import Utilities.ValidateUserID;
 
 import java.util.Scanner;
 
-
 /**
- *
- * Has Attributes: <br>
- *
- * Has Methods: <br>
+ * Klassen håndterer programmets hovedmenu, herunder login process for både admin og kunder.
+ * Klassen håndterer brugerinput og opretter passende {@link User} objekter baseret på brugerens valg.
+ * Menuen fungerer som et entry point til systemets flow.
  */
 public class Menu {
-
+/**Scanner til brugerinput fra konsol */
     private Scanner scanner;
+    /** Det aktive brugerobjet admin eller kunde, der er logget ind. */
     private User user;
 
-    // Konstruktør
+    /** Konstruktør der initaliserer input scanneren */
     public Menu() {
         scanner = new Scanner(System.in);
     }
+
+    /**
+     * videresender visningen til det aktive brugerobjekt.
+     *
+     * Metoden kalder {@link User#display()}, som viser enten admin eller member menu
+     * Afhængig af hvem der er logget ind.
+     */
     public void displayMenu(){user.display();}
+
+    /**
+     * Håndterer login process for admin og member.
+     * Brugeren bliver spurgt om de vil logge ind som admin.
+     * Ved svar ja oprettes et {@link Admin} objekt, og password validering sker automatisk
+     * via Admin konstruktøren.
+     * Ved svar nej bruger {@link ValidateUserID} til at validere navnet,
+     * hvorefter der oprettes et {@link Member} objekt.
+     *
+     * Hvis brugeren indtaster noget ugyldigt, bliver de bedt om at prøve igen.
+     */
 
 
     public void askAdminLogin() {
