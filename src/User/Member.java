@@ -288,7 +288,7 @@ public class Member implements User, Comparable<Member> {
                 }
             }
         } else if (userId == 0) {
-            System.out.println("Bruger ikke fundet. Kan ikke registrere køb.");
+            System.out.println("Bruger ikke fundet. Kan ikke hente bruger ID.");
             return;
         }
     }
