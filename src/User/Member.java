@@ -108,6 +108,14 @@ public class Member implements User {
         portfolio.add(h);
     }
 
+    /**
+     * Viser en oversigt over aktiemarket baseret på data fra stockMarket filen.
+     * Metoden indlæser aktiedata ved hjælp af {@link CSVReader} og udskriver
+     * hver akties ticker symbol,  navn og pris i formatet.
+     *
+     * Hvis filen er tom eller ingen aktier findes, vises en fejlbesked
+     * og metoden afsluttes.
+     */
     public void showStockMarket() {
         System.out.println("\n--- Aktiemarked ---");
 
@@ -128,6 +136,12 @@ public class Member implements User {
         }
     }
 
+    /**
+     * Metoden viser en liste over valuta kurser hentet fra currency filen.
+     * Metoden henter data fra {@link CSVReader} til at indlæse valutadata og udskriver hver række i format.
+     * Hvis filen er tom eller ikke indeholder data, gives en besked til brugeren,
+     * og metoden afsluttes uden fejl.
+     */
     public void showCurrency() {
         System.out.println("\n--- Valutakurser ---");
 
@@ -148,6 +162,20 @@ public class Member implements User {
         }
     }
 
+    /**
+     * Metoden registrerer et salg for brugeren/medlemmeren.
+     * Metoden går gennem trinnene:
+     *
+     * Beder kunden om at skrive ticker for aktien, der skal sælges.
+     * Validerer, at den indtastede antal er et gyldigt tal.
+     * Tjekker om kunden ejer aktien i sit portefølje.
+     * Validerer om kunden sælger flere aktier end personen ejer.
+     * Slår aktiens pris og valuta op i stockmarket filen.
+     * Opdatere portefølje.
+     * Logger salg til transaction filen via {@link TransactionWriter}.
+     *
+     * Hvis der opstår fejl undervejs, afbrydes programmet og passende fejlbesked vises.
+     */
     public void registerSale() {
         System.out.println("--- Registrer salg ---");
         System.out.print("Indtast hvilken aktie du har solgt: ");
